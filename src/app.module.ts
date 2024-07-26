@@ -13,9 +13,9 @@ import { UserModule } from './user/user.module';
   imports: [
     KeycloakConnectModule.register({
       authServerUrl: 'http://localhost:8080/',
-      realm: 'demo-realm',
-      clientId: 'nest-app',
-      secret: 'lRUKOlaq7x7lMcyQE8H7hKJWg3UI84au',
+      realm: 'myrealm',
+      clientId: 'nestjs',
+      secret: 'fDfx9U2g7ZoYOReWJ4Ihm7o0gQfvRsil',
       // Secret key of the client taken from keycloak server
     }),
     UserModule,

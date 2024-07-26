@@ -2,13 +2,18 @@ import { Injectable } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
+import { KeycloakAdminService } from 'src/keycloak-admin/keycloak-admin.service';
 
 @Injectable()
 export class UserService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private keycloakAdmin: KeycloakAdminService,
+  ) {}
 
-  async create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: any) {
+    return await this.keycloakAdmin.createUser(createUserDto);
+    // return 'This action adds a new user';
   }
 
   async findAll() {
