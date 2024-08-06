@@ -16,7 +16,7 @@ export class KeycloakAdminService {
     this.kcAdminClient.auth({
       grantType: 'client_credentials',
       clientId: 'nestjs',
-      clientSecret: 'fDfx9U2g7ZoYOReWJ4Ihm7o0gQfvRsil',
+      clientSecret: '3Ew4Ckg91DzculpsBLZjl6gGCRGA8UG2',
     });
   }
 
@@ -29,6 +29,7 @@ export class KeycloakAdminService {
       firstName: userDto.firstName,
       lastName: userDto.lastName,
       enabled: true,
+      emailVerified: true,
       credentials: [
         {
           type: 'password',
@@ -47,7 +48,7 @@ export class KeycloakAdminService {
         new URLSearchParams({
           grant_type: 'password',
           client_id: 'nestjs',
-          client_secret: 'fDfx9U2g7ZoYOReWJ4Ihm7o0gQfvRsil',
+          client_secret: '3Ew4Ckg91DzculpsBLZjl6gGCRGA8UG2',
           username: userDto.username,
           password: userDto.password,
         }),
@@ -64,5 +65,11 @@ export class KeycloakAdminService {
       );
       throw error;
     }
+  }
+  async listUser() {
+    console.log('create');
+    const user = await this.kcAdminClient.users.find({ realm: 'myrealm' });
+
+    return user;
   }
 }

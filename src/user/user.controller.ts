@@ -9,29 +9,36 @@ import {
   HttpCode,
   HttpStatus,
   UseGuards,
+  Req,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { AuthGuard, RoleGuard, Unprotected } from 'nest-keycloak-connect';
 import { KeycloakAdminService } from 'src/keycloak-admin/keycloak-admin.service';
+import {
+  AuthGuard,
+  Resource,
+  RoleGuard,
+  Unprotected,
+} from 'nest-keycloak-connect';
 
 @Controller('user')
-// @UseGuards(AuthGuard, RoleGuard)
+@UseGuards(AuthGuard, RoleGuard)
+@Resource('user')
 export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly keycloackAdmin: KeycloakAdminService,
   ) {}
 
-  @Post('/signup')
   @Unprotected()
+  @Post('/signup')
   singUp(@Body() createUserDto: any) {
     return this.keycloackAdmin.createUser(createUserDto);
   }
 
-  @Post('/login')
   @Unprotected()
+  @Post('/login')
   logIn(@Body() createUserDto: any) {
     return this.keycloackAdmin.loginUser(createUserDto);
   }
@@ -39,7 +46,15 @@ export class UserController {
   @Get()
   @HttpCode(HttpStatus.OK)
   findAll() {
-    return this.userService.findAll();
+    console.log(' ');
+    return this.keycloackAdmin.listUser();
+  }
+
+  @Resource('Default Resource')
+  @Get('profile')
+  @HttpCode(HttpStatus.OK)
+  profile(@Req() req: any) {
+    return req.user;
   }
 
   @Get(':id')
